@@ -15,18 +15,19 @@ public class NewMain {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        int poblacion = 31;
         ConvertidorBinarioClass c = new ConvertidorBinarioClass();
         int muestra[] = new int[4];
-        String muestra_binarios[];
         for (int i = 0; i < muestra.length; i++) {
-            muestra[i] = (int) (Math.random()* poblacion+0);
-            //System.out.println((int) (Math.random()* poblacion+0));
-            //i--;
+            muestra[i] = (int) (Math.random()*31+0);
         }
-        muestra_binarios = c.decimal_binario(muestra, 5);
-        for (int i = 0; i < muestra_binarios.length; i++) {
-            System.out.println(muestra[i] + " = " +muestra_binarios[i]);
+        int muestraBinarios[][] = c.decimalBinario(muestra, 5);
+                
+        for (int i = 0; i < muestra.length; i++) {
+            System.out.println(muestra[i] + ":     ");
+            for (int j = 0; j < muestraBinarios[i].length; j++) {
+                System.out.print(muestraBinarios[i][j]);
+            }
+            System.out.println(" ");
         }
     }
     

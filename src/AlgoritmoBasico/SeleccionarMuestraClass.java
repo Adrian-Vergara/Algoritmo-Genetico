@@ -22,6 +22,7 @@ public class SeleccionarMuestraClass {
        
         for (int i = 0; i < cantidad; i++) {                      
             int x = poblacion[(int) (Math.random()* poblacion.length+0)];
+            //int x = (int) (Math.random()*25+1);
             if(VerificarRepeticion(x)){
                 i--; //repetimos el ciclo para seleccionar un nuevo sujeto
             }else{
