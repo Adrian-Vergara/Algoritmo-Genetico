@@ -30,7 +30,11 @@ public class ConvertidorBinarioClass {
         }
         return muestraBinario;
     }
-    
+    /**
+     * Este metodo convierte de Binarios a Decimales
+     * @param muestraBinario recibe una matriz de binarios
+     * @return un vector de enteros de decimales
+     */
     public int[] binarioDecimal(int muestraBinario[][])
     {
         int muestraDecimal[] = new int[muestraBinario.length];
