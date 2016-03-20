@@ -11,20 +11,26 @@ package AlgoritmoBasico;
  */
 public class NewMain {
 
+<<<<<<< HEAD
     public void pruebaDecimalBinario(){
         ConvertidorBinarioClass c = new ConvertidorBinarioClass();
         int muestra[] = new int[4];
+=======
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) {
+        int poblacion[] = new int[32];
+        for (int i = 0; i < poblacion.length; i++) {
+            poblacion[i]=i;
+        } 
+        
+        
+        SeleccionarMuestraClass p=new SeleccionarMuestraClass(poblacion);
+        int [] muestra = p.getMuestra(4);
+>>>>>>> 1b303132004fc0dc6d0cad0c08ec2b928a52b5a0
         for (int i = 0; i < muestra.length; i++) {
-            muestra[i] = (int) (Math.random()*31+0);
-        }
-        int muestraBinarios[][] = c.decimalBinario(muestra, 5);
-                
-        for (int i = 0; i < muestra.length; i++) {
-            System.out.println(muestra[i] + ":     ");
-            for (int j = 0; j < muestraBinarios[i].length; j++) {
-                System.out.print(muestraBinarios[i][j]);
-            }
-            System.out.println(" ");
+            System.out.println(muestra[i]+" ");
         }
     }
     
