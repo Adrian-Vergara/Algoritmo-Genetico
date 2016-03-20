@@ -11,10 +11,7 @@ package AlgoritmoBasico;
  */
 public class NewMain {
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
+    public void pruebaDecimalBinario(){
         ConvertidorBinarioClass c = new ConvertidorBinarioClass();
         int muestra[] = new int[4];
         for (int i = 0; i < muestra.length; i++) {
@@ -29,6 +26,17 @@ public class NewMain {
             }
             System.out.println(" ");
         }
+    }
+    
+    public void pruebaBinarioDecimal(){
+        
+    }
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) {
+        NewMain pDecimalBinario = new NewMain();
+        pDecimalBinario.pruebaDecimalBinario();
     }
     
     

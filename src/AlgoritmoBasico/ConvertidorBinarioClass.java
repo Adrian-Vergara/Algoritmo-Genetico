@@ -30,4 +30,19 @@ public class ConvertidorBinarioClass {
         }
         return muestraBinario;
     }
+    
+    public int[] binarioDecimal(int muestraBinario[][])
+    {
+        int muestraDecimal[] = new int[muestraBinario.length];
+        for (int i = 0; i < muestraBinario.length; i++) {
+            int decimal = 0;
+            int k = muestraBinario[i].length - 1;
+            for (int j = 0; j < muestraBinario[i].length; j++) {
+                decimal = (int)(decimal + (muestraBinario[i][j] * Math.pow(2, k)));
+                k--;
+            }
+            muestraDecimal[i] = decimal;
+        }
+        return muestraDecimal;
+    }
 }
