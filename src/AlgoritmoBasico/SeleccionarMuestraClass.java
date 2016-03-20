@@ -19,14 +19,13 @@ public class SeleccionarMuestraClass {
      * @return muestra, array con el numero total de sujetos escogidos 
      */
     public int [] getMuestra(int cantidad){
-       
-        for (int i = 0; i < cantidad; i++) {                      
+        this.muestra = new int[cantidad];
+        for (int i = 0; i < cantidad; i++) { 
             int x = poblacion[(int) (Math.random()* poblacion.length+0)];
-            //int x = (int) (Math.random()*25+1);
-            if(VerificarRepeticion(x)){
-                i--; //repetimos el ciclo para seleccionar un nuevo sujeto
+            if(VerificarRepeticion(x,i)){
+                i--; 
             }else{
-                muestra[i] =  poblacion[(int) (Math.random()* poblacion.length+0)];
+                muestra[i] =  x;
             }         
         }
     
@@ -40,15 +39,13 @@ public class SeleccionarMuestraClass {
      * @return false, si no está en la muestra
      *         true, si está en la muestra
      */
-    private boolean VerificarRepeticion(int x){
-        int cont=0;
-        for (int i = 0; i < muestra.length; i++) {
+    private boolean VerificarRepeticion(int x,int l){
+        for (int i = 0; i < l; i++) {
             if(muestra[i]==x){
-                cont=cont++;
+                return true;
             }
         }   
-        if(cont==0) return false;
-        else return true;
+                return false;
         
     }
 }
