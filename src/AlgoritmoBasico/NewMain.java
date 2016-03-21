@@ -15,17 +15,7 @@ public class NewMain {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        int poblacion[] = new int[32];
-        for (int i = 0; i < poblacion.length; i++) {
-            poblacion[i]=i;
-        } 
-        
-        
-        SeleccionarMuestraClass p=new SeleccionarMuestraClass(poblacion);
-        int [] muestra = p.getMuestra(4);
-        for (int i = 0; i < muestra.length; i++) {
-            System.out.println(muestra[i]+" ");
-        }
+     
     }
     
     
