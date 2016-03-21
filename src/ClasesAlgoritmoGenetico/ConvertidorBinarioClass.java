@@ -1,5 +1,5 @@
 
-package AlgoritmoBasico;
+package ClasesAlgoritmoGenetico;
 
 
 /*
