@@ -85,24 +85,25 @@ public class Principal extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
     
        Controlador c=new Controlador();
-       double[][] datos = c.getData();
-       Object[] data = new Object[datos.length];
+       Object[][] data = new Object[4][4];
+       data = c.getData();
         
        DefaultTableModel dtm= new DefaultTableModel();
        this.jTable2.setModel(dtm);
        
      
-            dtm.addColumn("Sujeto");
             dtm.addColumn("Genes");
+            dtm.addColumn("Sujeto");
             dtm.addColumn("X a la 2");
             dtm.addColumn("Procentaje");
             
-        for (int row = 0; row < datos.length; row++) {
-            for (int i = 0; i < 4; i++) {
-                data[i] = datos[row][i];
-            }
-            dtm.addRow(data);
+        for (int row = 0; row < data.length; row++) {
+           
 
+        }
+        
+        for (int i = 0; i < 4; i++) {
+            dtm.addRow(data[i]);
         }
             
                

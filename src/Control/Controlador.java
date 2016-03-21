@@ -30,43 +30,42 @@ public class Controlador {
         return muestraDecimal;
     }
    
-    private int [] MuestraBinaria(int [] muestra){
+    private Object [] MuestraBinaria(int [] muestra){
         int [][] MatrizBin = ObConvertidor.decimalBinario(muestra, 5);
-        int [] VectorBin = new int [muestra.length];
+        Object[] VectorBin = new Object [muestra.length];
         for (int i = 0; i < MatrizBin.length; i++) {
             String num="";
             for (int j = 0; j < MatrizBin[i].length ; j++) {
              num = num+Integer.toString(MatrizBin[i][j]);
             }
-            VectorBin[i]= Integer.parseInt(num);
+            VectorBin[i]= num;
         }
         return VectorBin;
     }
    
-   private double [][] AgruparDatos(int [] muestra, int [] binarioMuestra){
+   private Object[][] AgruparDatos(int [] muestra, Object [] binarioMuestra){
        double [][] Matriz = this.ObEvaluar.EvlauarMuestra(muestra);    
-       double [][] data = new double[muestra.length][4];
-       
+       Object[][] d = new Object[muestra.length][4];
        for (int i = 0; i < muestra.length; i++) {
-           for (int j = 0; j < 3 ; j++) {
-               if(j<1){
-                   data[i][j] = Matriz[i][j];
-               }else {
-                   data[i][j+1] = Matriz[i][j];
-               }
-             
+           for (int j = 0; j < 4 ; j++) {
+            if (j>0){
+                if(j>2)d[i][j] =  Matriz[i][j-1];
+                else d[i][j] =  (int) Matriz[i][j-1];         
+            }else{
+                 d[i][j] = binarioMuestra[i];
+            }
            }
-           data[i][1] = binarioMuestra[i];
-           
+          
+         
        }
        
-       return  data;
+       return  d;
    }
    
-   public double [][] getData(){
+   public Object[][] getData(){
        int [] muestra = this.GenerarMuestra();
-       int [] binarioMuestra = this.MuestraBinaria(muestra);
-       double data[][]= AgruparDatos(this.GenerarMuestra(),binarioMuestra);
+       Object [] binarioMuestra = this.MuestraBinaria(muestra);
+       Object[][] data= AgruparDatos(muestra,binarioMuestra);
        
        return data;
    }
