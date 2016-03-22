@@ -1,9 +1,12 @@
 
 package Control;
 
+import Interfaces.AbstCruce;
 import ClasesAlgoritmoGenetico.ConvertidorBinarioClass;
+import ClasesAlgoritmoGenetico.Crucex2;
 import ClasesAlgoritmoGenetico.EvaluarXALa2;
 import ClasesAlgoritmoGenetico.SeleccionarMuestraClass;
+import Interfaces.IEvaluarMuestra;
 
 /**
  * Esta clase media entre la interfaz y gestiona los pasos del algoritmo genetico
@@ -13,11 +16,14 @@ public class Controlador {
     
     private SeleccionarMuestraClass ObMuestra;
     private ConvertidorBinarioClass ObConvertidor;
-    private EvaluarXALa2 ObEvaluar;
+    private IEvaluarMuestra ObEvaluar;
+    private AbstCruce ObCruce;
+    private int[] Generacion;
     
     public Controlador (){
        this.ObConvertidor = new ConvertidorBinarioClass();
        this.ObEvaluar = new EvaluarXALa2();
+       this.ObCruce = new Crucex2();
     }
     
    private int[] GenerarMuestra(){
@@ -43,18 +49,32 @@ public class Controlador {
         return VectorBin;
     }
    
-   private Object[][] AgruparDatos(int [] muestra, Object [] binarioMuestra){
-       double [][] Matriz = this.ObEvaluar.EvlauarMuestra(muestra);    
-       Object[][] d = new Object[muestra.length][4];
-       for (int i = 0; i < muestra.length; i++) {
-           for (int j = 0; j < 4 ; j++) {
-            if (j>0){
-                if(j>2)d[i][j] =  Matriz[i][j-1];
-                else d[i][j] =  (int) Matriz[i][j-1];         
-            }else{
-                 d[i][j] = binarioMuestra[i];
-            }
-           }
+    /**
+     * 
+     * @param generacion  int [] Vector con la generacion a Evaluar
+     * @param binarioMuestra Objeto con los genes de la generacion
+     * @return 
+     */
+   private Object[][] AgruparDatos(int [] generacion, Object [] binarioMuestra){
+       double [][] Matriz = this.ObEvaluar.EvlauarMuestra(generacion);    
+       Object[][] d = new Object[generacion.length+1][4];
+       for (int i = 0; i < generacion.length+1; i++) {
+          
+          if(i<generacion.length){
+               for (int j = 0; j < 4 ; j++) {
+                  if (j>0){
+                     if(j>2)d[i][j] =  Matriz[i][j-1];
+                     else d[i][j] =  (int) Matriz[i][j-1];         
+                  }else{
+                     d[i][j] = binarioMuestra[i];
+                  }
+               }
+          }else{
+              for (int j = 0; j < 4; j++) {
+                  d[i][j] = "*************";
+              }
+
+          } 
           
          
        }
@@ -63,10 +83,18 @@ public class Controlador {
    }
    
    public Object[][] getData(){
-       int [] muestra = this.GenerarMuestra();
-       Object [] binarioMuestra = this.MuestraBinaria(muestra);
-       Object[][] data= AgruparDatos(muestra,binarioMuestra);
+       
+       if(this.Generacion==null){
+            this.Generacion = this.GenerarMuestra();
+       }
+      
+       Object [] binarioMuestra = this.MuestraBinaria(this.Generacion);
+       Object[][] data= AgruparDatos(this.Generacion,binarioMuestra);
        
        return data;
+   }
+   
+   public void cruzar(){
+      this.Generacion = this.ObCruce.recombinacion(this.Generacion);
    }
 }
