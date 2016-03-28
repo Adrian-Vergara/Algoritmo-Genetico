@@ -5,8 +5,10 @@
  */
 package Vistas;
 
-import ClasesAlgoritmoGenetico.NewMain;
+
 import Control.Controlador;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -16,14 +18,138 @@ import javax.swing.table.TableModel;
  * @author erley
  */
 public class Principal extends javax.swing.JFrame {
-
+    String optimo="";  //Guarda el sujeto mas apto
+    String Niteraciones=""; //Guarda el numero de iteraciones 
+    int inicioPoblacion;
+    int finalPoblacion;
+    int muestra;
     /**
      * Creates new form Principal
      */
     public Principal() {
         initComponents();
     }
+    
+    /**
+     * Funcion que valida los datos de entrada
+     * @return true, si todo está validado
+     */
+    public boolean Validar(){
+       
+        
+        if(this.jTextIteraciones.getText().isEmpty()){
+        JOptionPane.showMessageDialog(null,"Por favor digite el numero de iteraciones ");
+        return false;
+        }
+        String inicio = this.jSpinnerInicio.getValue().toString();
+        String muestr= this.jSpinnerMuestra.getValue().toString();
+        String fin = this.jSpinnerFinal.getValue().toString();
+        String itera = this.jTextIteraciones.getText();
+       
+        this.inicioPoblacion= Integer.parseInt(inicio);
+        this.finalPoblacion = Integer.parseInt(fin);
+        int iteraciones = Integer.parseInt(this.jTextIteraciones.getText());
+        this.muestra =  Integer.parseInt(muestr);
+       
+      
+        if(this.inicioPoblacion<0){
+           JOptionPane.showMessageDialog(null,"El inicio de la poblacion no puede ser negativo");
+          return false;
+        }
+      
+       
+        if(iteraciones<0){
+           JOptionPane.showMessageDialog(null,"¿Iteraciones Negativas? ¿Estas loco? ");
+           return false;
+        }
+       
+        if(muestra<3){
+           JOptionPane.showMessageDialog(null," La muestra es muy pequeña");
+           return false;
+        }
+       
+       
+       
+        return true;
+    }
+    
+    public void Iniciar(){
+        
+       if (Validar()){
+       int iteraciones = Integer.parseInt(this.jTextIteraciones.getText());
+       Controlador c=new Controlador();
+       
+       ArrayList data = new ArrayList();// Objeto que recibe toda la informacion
+       Object[][] aux = new Object[1][1]; //Objeto para sacar la informacion de cada iteracion
+       int tamaño = this.finalPoblacion - this.inicioPoblacion;
+       int [] poblacion= new int[tamaño+1];
+       
+       /**
+        * Creamos la poblacion
+        */
+        for (int i = this.inicioPoblacion; i <= this.finalPoblacion; i++) {
+               poblacion[i]=i;
+        }
+       
+        
+        DefaultTableModel dtm= new DefaultTableModel();
+        this.jTable2.setModel(dtm);
+        
+        
+        dtm.addColumn("Genes");
+        dtm.addColumn("Sujeto");
+        dtm.addColumn("X a la 2");
+        dtm.addColumn("Procentaje");       
+            
+        
+            
+        /**
+         * Enviamos los datos para realizar el algoritmo
+         */
+        data = c.run(poblacion , this.muestra, iteraciones);
+        
+        /**
+         * Acomodamos los datos 
+         */
+        for (int i = 0; i <data.size(); i++) {
+             if(i==data.size()-3){
+                 this.jLabelMuestra.setText((String) data.get(i));
+             }
+             if(i==data.size()-2){
+                 this.optimo=Integer.toString((int) data.get(i));
+             }
+             if(i==data.size()-1){
+                 this.Niteraciones=Integer.toString((int) data.get(i));
+             }
+             if(i<data.size()-3){
+                 aux=(Object[][]) data.get(i);
+                 
+                 for (int k = 0; k < aux.length; k++) {
+                  
+                     dtm.addRow(aux[k]);
+                     
+                 }
+                 
+             }
+             
+        }
+        
+       JOptionPane.showMessageDialog(null,"Es sujeto mas apto es: "+this.optimo+" Encontrado en la iteracion :"+this.Niteraciones);
+        
+       } 
+               
+                 
+                 
+            
+            
+            
+                     
+               
+           
 
+    }
+    
+ 
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -35,9 +161,23 @@ public class Principal extends javax.swing.JFrame {
 
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
+        jLabelTitulo = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
         jTextIteraciones = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabelMuestra = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jSpinnerFinal = new javax.swing.JSpinner();
+        jSpinnerInicio = new javax.swing.JSpinner();
+        jSpinnerMuestra = new javax.swing.JSpinner();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -53,6 +193,21 @@ public class Principal extends javax.swing.JFrame {
         jScrollPane2.setViewportView(jTable2);
         jTable2.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
+        jPanel1.setBackground(new java.awt.Color(173, 178, 233));
+
+        jLabelTitulo.setFont(new java.awt.Font("Perpetua", 0, 30)); // NOI18N
+        jLabelTitulo.setText("Algoritmo Genético  X ^ 2");
+
+        jPanel2.setBackground(new java.awt.Color(126, 198, 150));
+        jPanel2.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
+        jTextIteraciones.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextIteracionesKeyTyped(evt);
+            }
+        });
+
+        jButton1.setFont(new java.awt.Font("FigurineCB LetterSP", 1, 18)); // NOI18N
         jButton1.setText("Comenzar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -60,70 +215,175 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setText("Numero de iteracciones");
+        jLabel4.setFont(new java.awt.Font("FigurineCB LetterSP", 1, 18)); // NOI18N
+        jLabel4.setText("Numero de iteraciones");
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(142, 142, 142)
+                        .addComponent(jTextIteraciones, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(107, 107, 107)
+                        .addComponent(jButton1)))
+                .addContainerGap(127, Short.MAX_VALUE))
+            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                    .addContainerGap(66, Short.MAX_VALUE)
+                    .addComponent(jLabel4)
+                    .addGap(58, 58, 58)))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jTextIteraciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(71, 71, 71)
+                .addComponent(jButton1)
+                .addGap(38, 38, 38))
+            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel2Layout.createSequentialGroup()
+                    .addGap(21, 21, 21)
+                    .addComponent(jLabel4)
+                    .addContainerGap(189, Short.MAX_VALUE)))
+        );
+
+        jPanel3.setBackground(new java.awt.Color(126, 141, 255));
+        jPanel3.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jPanel3.setFont(new java.awt.Font("FigurineCB LetterSP", 0, 18)); // NOI18N
+
+        jLabel3.setFont(new java.awt.Font("FigurineCB LetterSP", 1, 18)); // NOI18N
+        jLabel3.setText("Funcion Objetivo:  X^2");
+
+        jLabel2.setFont(new java.awt.Font("FigurineCB LetterSP", 1, 18)); // NOI18N
+        jLabel2.setText("-");
+
+        jLabel6.setFont(new java.awt.Font("FigurineCB LetterSP", 1, 18)); // NOI18N
+        jLabel6.setText("Tamaño Muestra: ");
+
+        jLabel5.setFont(new java.awt.Font("FigurineCB LetterSP", 1, 18)); // NOI18N
+        jLabel5.setText("Muestra Inicial:");
+
+        jLabelMuestra.setFont(new java.awt.Font("FigurineCB LetterSP", 1, 18)); // NOI18N
+        jLabelMuestra.setText("-");
+
+        jLabel7.setFont(new java.awt.Font("FigurineCB LetterSP", 1, 18)); // NOI18N
+        jLabel7.setText("Numero de genes: 5");
+
+        jLabel8.setFont(new java.awt.Font("FigurineCB LetterSP", 1, 18)); // NOI18N
+        jLabel8.setText("Poblacion: ");
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jSpinnerMuestra, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabelMuestra, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel7)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel8)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jSpinnerInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jSpinnerFinal, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel3))
+                .addContainerGap(29, Short.MAX_VALUE))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel8)
+                    .addComponent(jSpinnerFinal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jSpinnerInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(jSpinnerMuestra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(jLabelMuestra))
+                .addGap(18, 18, 18)
+                .addComponent(jLabel7)
+                .addContainerGap(42, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(39, 39, 39)
+                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(33, 33, 33)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(243, 243, 243)
+                        .addComponent(jLabelTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 356, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(35, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabelTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(39, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel1)
-                        .addGap(27, 27, 27)
-                        .addComponent(jTextIteraciones, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(289, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jScrollPane2)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(64, 64, 64)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jTextIteraciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
-                .addGap(46, 46, 46)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(288, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 282, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-      int iteraciones = Integer.parseInt(this.jTextIteraciones.getText());
-       Controlador c=new Controlador();
-       Object[][] data = new Object[10][10];
-       
-        
-       DefaultTableModel dtm= new DefaultTableModel();
-       this.jTable2.setModel(dtm);
-       
-     
-            dtm.addColumn("Genes");
-            dtm.addColumn("Sujeto");
-            dtm.addColumn("X a la 2");
-            dtm.addColumn("Procentaje");
-        
-            
-            for (int i = 0; i < iteraciones; i++) {
-                data = c.getData();
-                 for (int j = 0; j < 5 ; j++) {
-                   dtm.addRow(data[j]);
-                 }
-                 c.cruzar();
-                 
-            }
-        
-            
-               
-
-
+     Iniciar();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jTextIteracionesKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextIteracionesKeyTyped
+       char car = evt.getKeyChar();
+        if( this.jTextIteraciones.getText().length()>=8 ) evt.consume();
+        if(( car<'0' || car>'9' )) evt.consume();
+    }//GEN-LAST:event_jTextIteracionesKeyTyped
 
     /**
      * @param args the command line arguments
@@ -162,8 +422,22 @@ public class Principal extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabelMuestra;
+    private javax.swing.JLabel jLabelTitulo;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JSpinner jSpinnerFinal;
+    private javax.swing.JSpinner jSpinnerInicio;
+    private javax.swing.JSpinner jSpinnerMuestra;
     private javax.swing.JTable jTable2;
     private javax.swing.JTextField jTextIteraciones;
     // End of variables declaration//GEN-END:variables

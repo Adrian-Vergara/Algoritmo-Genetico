@@ -11,7 +11,7 @@ package Interfaces;
  */
 public abstract class AbstCruce {
     
-   public abstract int [] recombinacion(int muestraDecimal[]);
+   public abstract int [] recombinacion(int muestraDecimal[],int bits, int []poblacion);
    public abstract int [] seleccionarAptos(int muestraDecimal[]);
     
     public int puntoDeCruce(int limiteInferior, int limiteSuperior){
